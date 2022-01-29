@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, Response, jsonify
+from flask import Flask, render_template, request
 from kmeans_service import kmeans_service
 from PIL import Image
 import io
