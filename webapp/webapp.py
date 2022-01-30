@@ -1,4 +1,7 @@
 from flask import Flask, render_template, request
+import os, sys
+my_lib_path = os.path.abspath('../')
+sys.path.append(my_lib_path)
 from kmeans_service import kmeans_service
 from PIL import Image
 import io

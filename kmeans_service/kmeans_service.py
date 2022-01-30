@@ -26,12 +26,13 @@ def calculate_clusters(clusters_amount):
 
 
 def build_response_from_model(kmeans_model):
+    # traverse the model and find NUM_OF_IMAGES_PER_CLUSTER images example for each center
     response = []
     for i in range(len(kmeans_model.cluster_centers_)):
         center = kmeans_model.cluster_centers_[i]
-        center = get_image_format(center)
+        center = change_image_to_two_dimension(center)
         cluster = KMeansClusterResponse(i, KMeansNumberInfo(center))
-        for label_index in range(len(kmeans_model.labels_)):
+        for label_index in range(len(kmeans_model.labels_)):  # -> This calculation can be improved
             label_cluster_index = kmeans_model.labels_[label_index]
             if label_cluster_index == cluster.cluster_index:  # fill only this center's image list
                 cluster.add_cluster_number(KMeansNumberInfoExtended(X_train[label_index], label_index, int(y_train[label_index])))
@@ -42,11 +43,11 @@ def build_response_from_model(kmeans_model):
     return response
 
 
-def get_image_format(center):
-    center = np.reshape(center, (28, 28))
-    center = center * 255
-    center = center.astype(np.uint8)
-    return center
+def change_image_to_two_dimension(images_np_array):
+    images_np_array = np.reshape(images_np_array, (28, 28))
+    images_np_array = images_np_array * 255
+    images_np_array = images_np_array.astype(np.uint8)
+    return images_np_array
 
 
 class KMeansClusterResponse:
